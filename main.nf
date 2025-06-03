@@ -13,11 +13,8 @@ process align_to_ref {
     tuple val(sample), path("${sample}.bam")
 
     script:
-    preset_str = reads2 ? "-x sr" : "-x map-ont"
-
     index_ref_str = reads2 ? "bwa-mem2 index -p ${ref} ${ref}" : ""
-
-    alignment_str = reads2 ? "bwa-mem2 mem -t ${task.cpus} ${ref} ${reads1} ${reads2}" : "minimap2 ${preset_str} -a -t ${task.cpus} ${ref} ${reads1}"
+    alignment_str = reads2 ? "bwa-mem2 mem -t ${task.cpus} ${ref} ${reads1} ${reads2}" : "minimap2 -x map-ont -a -t ${task.cpus} ${ref} ${reads1}"
 
     """
     ${index_ref_str}
@@ -60,7 +57,7 @@ process nucleotide_diversity {
 
     script:
     """
-    nucleotide_diversity.py ${sample} ${depth_tsv} > ${sample}.diversity_metrics.csv
+    nucleotide_diversity.py --min-allele-depth ${params.min_allele_depth} --min_coverage ${params.minimum_coverage} --min_allele_frequency ${params.min_allele_frequency} ${sample} ${depth_tsv} > ${sample}.diversity_metrics.csv
     """
 }
 
