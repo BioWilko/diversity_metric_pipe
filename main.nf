@@ -57,7 +57,7 @@ process nucleotide_diversity {
 
     script:
     """
-    nucleotide_diversity.py --min-allele-depth ${params.min_allele_depth} --min_coverage ${params.minimum_coverage} --min_allele_frequency ${params.min_allele_frequency} ${sample} ${depth_tsv} > ${sample}.diversity_metrics.csv
+    nucleotide_diversity.py --min-allele-depth ${params.min_allele_depth} --min-cov ${params.minimum_coverage} --min-allele-frequency ${params.min_allele_frequency} ${sample} ${depth_tsv} > ${sample}.diversity_metrics.csv
     """
 }
 
