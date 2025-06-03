@@ -15,7 +15,14 @@ def calculate_pairwise_difference(
     to_check = ("a", "c", "g", "t")
 
     # Calculate the total number of alleles
-    n = sum([int(row[field]) for field in to_check])
+    n = sum(
+        [
+            int(row[field])
+            for field in to_check
+            if int(row[field]) >= min_allele_depth
+            and (int(row[field]) / int(row["cov"])) >= min_allele_frequency
+        ]
+    )
 
     if n < min_cov:
         return None
@@ -32,7 +39,7 @@ def calculate_pairwise_difference(
             (int(row[field]) * (int(row[field]) - 1))
             for field in to_check
             if int(row[field]) >= min_allele_depth
-            and (int(row[field]) / n) >= min_allele_frequency
+            and (int(row[field]) / int(row["cov"])) >= min_allele_frequency
         ]
     )
 
