@@ -26,8 +26,9 @@ process maptide {
     container "community.wave.seqera.io/library/pip_maptide_setuptools:8df043169de12124"
 
     cpus 1
-    memory "16 GB"
-    time "30m"
+    memory { 32.GB * task.attempt}
+    maxRetries 3
+    errorStrategy 'retry'
 
     input:
     tuple val(sample), path(bam)
